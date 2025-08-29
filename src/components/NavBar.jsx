@@ -1,36 +1,19 @@
-import React, { useState, useContext } from "react";
-import { Menu, X } from "lucide-react"; // icons
-import { ResumeContext } from "../context/ResumeContext";
+import React, { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setResumeData } = useContext(ResumeContext);
-
-  const handleNewResume = () => {
-    setResumeData({
-      name: "",
-      email: "",
-      phone: "",
-      summary: "",
-      education: [],
-      experience: [],
-      skills: [],
-      projects: [],
-      template: "modern",
-    });
-    setIsOpen(false); // close menu on mobile after click
-  };
 
   const navLinkClasses = ({ isActive }) =>
-    `hover:text-blue-600 ${
+    `block px-3 py-2 rounded-md text-base font-medium hover:text-blue-600 transition-colors ${
       isActive
         ? "text-blue-600 font-semibold"
         : "text-gray-700 dark:text-gray-200"
     }`;
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md">
+    <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -47,7 +30,7 @@ const Navbar = () => {
               Home
             </NavLink>
             <NavLink to="/resumebuilder" className={navLinkClasses}>
-              Resume Builder
+              Build a Resume?
             </NavLink>
             <NavLink to="/about" className={navLinkClasses}>
               About
@@ -56,45 +39,45 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle Menu"
+              className="focus:outline-none"
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Dropdown */}
-      {isOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-800 px-4 pb-4 space-y-3">
-          <NavLink
-            to="/"
-            className={navLinkClasses}
-            onClick={() => setIsOpen(false)}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/home"
-            className={navLinkClasses}
-            onClick={() => setIsOpen(false)}
-          >
-            Resume Builder
-          </NavLink>
-          <NavLink
-            to="/about"
-            className={navLinkClasses}
-            onClick={() => setIsOpen(false)}
-          >
-            About
-          </NavLink>
-          <button
-            className="w-full text-left px-3 py-2 bg-blue-600 text-white rounded-lg"
-            onClick={handleNewResume}
-          >
-            New Resume
-          </button>
-        </div>
-      )}
+      <div
+        className={`md:hidden bg-white dark:bg-gray-800 transition-max-height duration-300 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-60 py-2" : "max-h-0"
+        }`}
+      >
+        <NavLink
+          to="/"
+          className={navLinkClasses}
+          onClick={() => setIsOpen(false)}
+        >
+          Home
+        </NavLink>
+        <NavLink
+          to="/resumebuilder"
+          className={navLinkClasses}
+          onClick={() => setIsOpen(false)}
+        >
+          Resume Builder
+        </NavLink>
+        <NavLink
+          to="/about"
+          className={navLinkClasses}
+          onClick={() => setIsOpen(false)}
+        >
+          About
+        </NavLink>
+      </div>
     </nav>
   );
 };

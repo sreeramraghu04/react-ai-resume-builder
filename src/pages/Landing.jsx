@@ -15,7 +15,7 @@ const Landing = () => {
 
       {/* CTA Button */}
       <Link
-        to="/home"
+        to="/resumebuilder"
         className="px-6 py-3 bg-blue-600 text-white text-lg rounded-lg shadow hover:bg-blue-700 transition"
       >
         Get Started
